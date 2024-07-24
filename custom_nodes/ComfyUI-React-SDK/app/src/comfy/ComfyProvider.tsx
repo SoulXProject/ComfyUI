@@ -1,10 +1,23 @@
 import React, {createContext, useContext, useState, ReactNode, useEffect} from 'react';
 import axios from "axios";
-import {DashboardGenParams, GetWebSocket, Root, WORKFLOW} from "./api";
+import {
+    DashboardGenParams,
+    GetWebSocket,
+    Root,
+    WORKFLOW,
+    NUKKI_WORKFLOW,
+    IMAGETO3D_WORKFLOW,
+    ADVANCEDIMAGE_WORKFLOW,
+    imageToImageGenParams
+} from "./api";
 
 interface DataContextProps {
     fetchCheckpoints: () => Promise<string[][]>;
     queuePrompt: (params: DashboardGenParams) => Promise<any>;
+    removeNukkiPrompt: (inputImage: string) => Promise<any>;
+    advancedImagePrompt: (params: imageToImageGenParams) => Promise<any>;
+    imageTo3dPrompt: (inputImage: string) => Promise<any>;
+    uploadImage: (file: File) => Promise<string>;
 }
 
 const DataContext = createContext<DataContextProps | undefined>(undefined);
@@ -51,9 +64,70 @@ export const ComfyProvider: React.FC<DataProviderProps> = ({ children }) => {
 
         return response.json();
     }
+    const removeNukkiPrompt = async (filename: string) => {
+        const data = { 'prompt': NUKKI_WORKFLOW, 'client_id': "1122"};
+        NUKKI_WORKFLOW["29"].inputs.image =  filename
+
+        const response = await fetch('/prompt', {
+            method: 'POST',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        return response.json();
+    }
+    const advancedImagePrompt = async (params: imageToImageGenParams) => {
+        const data = { 'prompt': ADVANCEDIMAGE_WORKFLOW, 'client_id': "1122"};
+        ADVANCEDIMAGE_WORKFLOW["122"].inputs.image =  params.filename
+        ADVANCEDIMAGE_WORKFLOW["6"].inputs.text =  params.positivePrompt
+        ADVANCEDIMAGE_WORKFLOW["7"].inputs.text =  params.negativePrompt
+
+        const response = await fetch('/prompt', {
+            method: 'POST',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        return response.json();
+    }
+    const imageTo3dPrompt = async (filename: string) => {
+        const data = { 'prompt': IMAGETO3D_WORKFLOW, 'client_id': "1122"};
+        IMAGETO3D_WORKFLOW["2"].inputs.image =  filename
+
+        const response = await fetch('/prompt', {
+            method: 'POST',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        return response.json();
+    }
+    const uploadImage = async (file: File): Promise<any> => {
+        const formData = new FormData();
+        formData.append('image', file);
+
+        const response = await fetch('/upload/image', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json',
+            },
+        });
+
+        return response.json();
+    };
 
     return (
-        <DataContext.Provider value={{fetchCheckpoints ,queuePrompt}}>
+        <DataContext.Provider value={{fetchCheckpoints ,queuePrompt, removeNukkiPrompt, advancedImagePrompt, imageTo3dPrompt, uploadImage}}>
             {children}
         </DataContext.Provider>
     );
@@ -66,4 +140,3 @@ export const useComfy = (): DataContextProps => {
     }
     return context;
 };
-

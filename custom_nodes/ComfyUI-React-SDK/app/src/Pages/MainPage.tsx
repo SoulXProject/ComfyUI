@@ -85,10 +85,72 @@ const MainPage: React.FC = () => {
                 height: '100%',
                 boxShadow: theme.shadows[4],
               }}
+              component={Link}
+              to="/removeNukki"
             >
               <Typography variant="h5">누끼 따기 AI</Typography>
               <Typography variant="body1">
                 이미지를 업로드하면 배경을 자동으로 제거하여 인물이나 사물만 남길 수 있습니다.
+              </Typography>
+            </Paper>
+          </motion.div>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.3 }}
+          >
+            <Paper
+              elevation={3}
+              style={{
+                padding: '20px',
+                backgroundColor: theme.palette.secondary.main,
+                color: 'white',
+                borderRadius: '16px',
+                textAlign: 'center',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '100%',
+                boxShadow: theme.shadows[4],
+              }}
+              component={Link}
+              to="/imageToImage"
+            >
+              <Typography variant="h5">이미지 to 이미지 AI</Typography>
+              <Typography variant="body1">
+                  이미지를 업로드하면 고급화된 이미지를 생성할 수 있습니다.
+              </Typography>
+            </Paper>
+          </motion.div>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.3 }}
+          >
+            <Paper
+              elevation={3}
+              style={{
+                padding: '20px',
+                backgroundColor: theme.palette.secondary.main,
+                color: 'white',
+                borderRadius: '16px',
+                textAlign: 'center',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '100%',
+                boxShadow: theme.shadows[4],
+              }}
+              component={Link}
+              to="/imageTo3D"
+            >
+              <Typography variant="h5">이미지 to 3D AI</Typography>
+              <Typography variant="body1">
+                  이미지를 업로드하면 3D 에셋을 자동으로 생성할 수 있습니다.
               </Typography>
             </Paper>
           </motion.div>

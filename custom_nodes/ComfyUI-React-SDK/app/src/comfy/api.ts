@@ -60,6 +60,12 @@ export interface DashboardGenParams {
     negativePrompt: string
 }
 
+export interface imageToImageGenParams {
+    filename: string
+    positivePrompt: string
+    negativePrompt: string
+}
+
 export interface Root {
     CheckpointLoaderSimple: CheckpointLoaderSimple
 }
@@ -180,7 +186,25 @@ export const WORKFLOW =
             }
         }
     };
-
-
-
+export const NUKKI_WORKFLOW =
+    {"10":{"inputs":{"rembg_session":["15",0],"image":["29",0]},"class_type":"ImageRemoveBackground+"},"15":{"inputs":{"model":"u2net: general purpose","providers":"CPU"},"class_type":"RemBGSession+"},"28":{"inputs":{"filename_prefix":"ComfyUI","images":["10",0]},"class_type":"SaveImage"},"29":{"inputs":{"image":"cat.png","upload":"image"},"class_type":"LoadImage"}}
+export const IMAGETO3D_WORKFLOW =
+    {
+        '1': {'inputs': {'model': 'model.ckpt', 'chunk_size': 8192}, 'class_type': 'TripoSRModelLoader'},
+        '2': {'inputs': {'image': 'cat.png', 'upload': 'image'}, 'class_type': 'LoadImage'},
+        '3': {
+            'inputs': {
+                'geometry_resolution': 512,
+                'threshold': 25,
+                'model': ['1', 0],
+                'reference_image': ['10', 0],
+                'reference_mask': ['10', 1]
+            }, 'class_type': 'TripoSRSampler'
+        },
+        '10': {'inputs': {'rembg_session': ['11', 0], 'image': ['2', 0]}, 'class_type': 'ImageRemoveBackground+'},
+        '11': {'inputs': {'model': 'u2net: general purpose', 'providers': 'CPU'}, 'class_type': 'RemBGSession+'},
+        '12': {'inputs': {'images': ['10', 0]}, 'class_type': 'PreviewImage'}
+    }
+export const ADVANCEDIMAGE_WORKFLOW =
+    {"4":{"inputs":{"ckpt_name":"realcartoonXL_v6.safetensors"},"class_type":"CheckpointLoaderSimple"},"6":{"inputs":{"text":"game illustration of a can coke","clip":["68",1]},"class_type":"CLIPTextEncode"},"7":{"inputs":{"text":"blurry, noisy, messy, lowres, jpeg, artifacts, ill, distorted, malformed, nsfw, nude","clip":["68",1]},"class_type":"CLIPTextEncode"},"37":{"inputs":{"seed":708271151329109,"steps":4,"cfg":1,"sampler_name":"dpmpp_2m_sde","scheduler":"sgm_uniform","denoise":0.78,"model":["68",0],"positive":["6",0],"negative":["7",0],"latent_image":["90",0]},"class_type":"KSampler"},"38":{"inputs":{"samples":["37",0],"vae":["4",2]},"class_type":"VAEDecode"},"68":{"inputs":{"lora_name":"sdxl_lightning_8step_lora.safetensors","strength_model":1,"strength_clip":1,"model":["4",0],"clip":["4",1]},"class_type":"LoraLoader"},"90":{"inputs":{"pixels":["91",0],"vae":["4",2]},"class_type":"VAEEncode"},"91":{"inputs":{"upscale_method":"nearest-exact","width":1024,"height":1024,"crop":"disabled","image":["122",0]},"class_type":"ImageScale"},"122":{"inputs":{"image":"cat.png","upload":"image"},"class_type":"LoadImage"},"123":{"inputs":{"filename_prefix":"ComfyUI","images":["38",0]},"class_type":"SaveImage"}}
 

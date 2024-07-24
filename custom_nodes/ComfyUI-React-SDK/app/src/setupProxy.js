@@ -16,6 +16,13 @@ module.exports = function(app) {
         })
     );
     app.use(
+        '/upload/image',
+        createProxyMiddleware({
+            target: 'http://localhost:8188',
+            changeOrigin: true,
+        })
+    );
+    app.use(
         '/view',
         createProxyMiddleware({
             target: 'http://localhost:8188',

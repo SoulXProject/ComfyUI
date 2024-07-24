@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { useComfy } from '../comfy/ComfyProvider';
 import {
@@ -31,7 +32,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
   const [image, setImage] = useState<string | null>(null);
   const [checkpoints, setCheckpoints] = useState<string[]>([]); // 수정된 부분
   const [selectedCheckpoint, setSelectedCheckpoint] = useState<string>('');
-  
+
   const [cfg, setCfg] = useState(5);
   const [steps, setSteps] = useState(25);
   const [seed, setSeed] = useState(Math.round(Math.random() * Number.MAX_SAFE_INTEGER));
@@ -95,77 +96,89 @@ const Dashboard: React.FC<DashboardProps> = () => {
   };
 
   return (
-    <div>
-      <Stack direction="row" spacing={2} style={{ width: '100%' }}>
+      <div>
+        <Stack direction="row" spacing={2} style={{ width: '100%' }}>
 
-        <Box flex="1" style={{ padding: '20px' }}>
-          <Stack direction="column" spacing={6} style={{ marginTop: '5vh' }}>
+          <Box flex="1" style={{ padding: '20px' }}>
+            <Stack direction="column" spacing={6} style={{ marginTop: '5vh' }}>
 
-            <img src='./SoulxLogo.png'/>
-            <FormControl fullWidth>
-              <Select value={selectedCheckpoint} onChange={(e) => setSelectedCheckpoint(e.target.value)} displayEmpty>
-                <MenuItem value="" disabled>Select Checkpoint</MenuItem>
-                {checkpoints.map((option, index) => (
-                  <MenuItem key={index} value={option}>{option}</MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <FormControl>
-              <FormLabel>CFG ({cfg})</FormLabel>
-              <Slider value={cfg} min={1} max={10} step={0.5} onChange={(e, value) => setCfg(value as number)} valueLabelDisplay="auto" />
-            </FormControl>
-            <FormControl>
-              <FormLabel>Steps ({steps})</FormLabel>
-              <Slider value={steps} min={1} max={100} step={1} onChange={(e, value) => setSteps(value as number)} valueLabelDisplay="auto" />
-            </FormControl>
-            <Stack direction="row" spacing={5}>
-              <TextField
-                label="Seed"
-                type="number"
-                value={seed}
-                onChange={(e) => setSeed(Number(e.target.value))}
-                InputProps={{ inputProps: { min: 1, max: Number.MAX_SAFE_INTEGER } }}
-                fullWidth
-              />
-              <FormControlLabel
-                control={<Checkbox checked={randomSeed} onChange={(e) => setRandomSeed(e.target.checked)} />}
-                label="Random Seed"
-              />
+              <img src='./SoulxLogo.png'/>
+              <FormControl fullWidth>
+                <Select value={selectedCheckpoint} onChange={(e) => setSelectedCheckpoint(e.target.value)} displayEmpty>
+                  <MenuItem value="" disabled>Select Checkpoint</MenuItem>
+                  {checkpoints.map((option, index) => (
+                      <MenuItem key={index} value={option}>{option}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <FormControl>
+                <FormLabel>CFG ({cfg})</FormLabel>
+                <Slider value={cfg} min={1} max={10} step={0.5} onChange={(e, value) => setCfg(value as number)} valueLabelDisplay="auto" />
+              </FormControl>
+              <FormControl>
+                <FormLabel>Steps ({steps})</FormLabel>
+                <Slider value={steps} min={1} max={100} step={1} onChange={(e, value) => setSteps(value as number)} valueLabelDisplay="auto" />
+              </FormControl>
+              <Stack direction="row" spacing={5}>
+                <TextField
+                    label="Seed"
+                    type="number"
+                    value={seed}
+                    onChange={(e) => setSeed(Number(e.target.value))}
+                    InputProps={{ inputProps: { min: 1, max: Number.MAX_SAFE_INTEGER } }}
+                    fullWidth
+                />
+                <FormControlLabel
+                    control={<Checkbox checked={randomSeed} onChange={(e) => setRandomSeed(e.target.checked)} />}
+                    label="Random Seed"
+                />
+              </Stack>
+              <Stack direction="row" spacing={5}>
+                <TextField label="Height" type="number" value={height} onChange={(e) => setHeight(Number(e.target.value))} fullWidth />
+                <TextField label="Width" type="number" value={width} onChange={(e) => setWidth(Number(e.target.value))} fullWidth />
+              </Stack>
+              <TextField label="Positive Prompt" multiline rows={4} value={positivePrompt} onChange={(e) => setPositivePrompt(e.target.value)} fullWidth />
+              <TextField label="Negative Prompt" multiline rows={4} value={negativePrompt} onChange={(e) => setNegativePrompt(e.target.value)} fullWidth />
+              <Button variant="contained" color="primary" onClick={generate}>Generate</Button>
+              {inProgress && <LinearProgress variant="determinate" value={progress} />}
             </Stack>
-            <Stack direction="row" spacing={5}>
-              <TextField label="Height" type="number" value={height} onChange={(e) => setHeight(Number(e.target.value))} fullWidth />
-              <TextField label="Width" type="number" value={width} onChange={(e) => setWidth(Number(e.target.value))} fullWidth />
-            </Stack>
-            <TextField label="Positive Prompt" multiline rows={4} value={positivePrompt} onChange={(e) => setPositivePrompt(e.target.value)} fullWidth />
-            <TextField label="Negative Prompt" multiline rows={4} value={negativePrompt} onChange={(e) => setNegativePrompt(e.target.value)} fullWidth />
-            <Button variant="contained" color="primary" onClick={generate}>Generate</Button>
-            {inProgress && <LinearProgress variant="determinate" value={progress} />}
-          </Stack>
-        </Box>
-        <Box flex="2" display="flex" alignItems="center" justifyContent="center" height="100vh">
-          <Box
-            component="div"
-            minWidth="80%"
-            maxWidth="80%"
-            border="2px solid black"
-            p="4"
-            borderRadius="md"
-            style={{ aspectRatio: '1/1' }}
-          >
-            {image ? (
-              <img
-                src={`/view?filename=${image}&type=output&rand=${rand}`}
-                alt=""
-                style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-              />
-            ) : (
-              <img src={base} alt="Red dot" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-            )}
           </Box>
-        </Box>
-        <Box flex="1"></Box>
-      </Stack>
-    </div>
+          <Box flex="2" display="flex" alignItems="center" justifyContent="center" height="100vh">
+            <Box
+                component="div"
+                minWidth="80%"
+                maxWidth="80%"
+                border="2px solid black"
+                p="4"
+                borderRadius="md"
+                style={{ aspectRatio: '1/1' }}
+            >
+              {image ? (
+                  <>
+                    <img
+                        src={`/view?filename=${image}&type=output&rand=${rand}`}
+                        alt=""
+                        style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                    />
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        component="a"
+                        href={`/view?filename=${image}&type=output&rand=${rand}`}
+                        download
+                        style={{ marginTop: '10px' }}
+                    >
+                      Download Image
+                    </Button>
+                  </>
+              ) : (
+                  <img src={base} alt="Red dot" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+              )}
+            </Box>
+          </Box>
+          <Box flex="1"></Box>
+        </Stack>
+      </div>
   );
 };
 
