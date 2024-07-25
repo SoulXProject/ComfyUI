@@ -8,7 +8,8 @@ import {
     NUKKI_WORKFLOW,
     IMAGETO3D_WORKFLOW,
     ADVANCEDIMAGE_WORKFLOW,
-    imageToImageGenParams
+    imageToImageGenParams,
+    clientId
 } from "./api";
 
 interface DataContextProps {
@@ -51,7 +52,7 @@ export const ComfyProvider: React.FC<DataProviderProps> = ({ children }) => {
         WORKFLOW["5"].inputs.width =  params.width
         WORKFLOW["6"].inputs.text =  params.positivePrompt
         WORKFLOW["7"].inputs.text =  params.negativePrompt
-        const data = { 'prompt': WORKFLOW, 'client_id': "1122"};
+        const data = { 'prompt': WORKFLOW, 'client_id': clientId};
 
         const response = await fetch('/prompt', {
             method: 'POST',
@@ -65,7 +66,7 @@ export const ComfyProvider: React.FC<DataProviderProps> = ({ children }) => {
         return response.json();
     }
     const removeNukkiPrompt = async (filename: string) => {
-        const data = { 'prompt': NUKKI_WORKFLOW, 'client_id': "1122"};
+        const data = { 'prompt': NUKKI_WORKFLOW, 'client_id': clientId};
         NUKKI_WORKFLOW["29"].inputs.image =  filename
 
         const response = await fetch('/prompt', {
@@ -80,7 +81,7 @@ export const ComfyProvider: React.FC<DataProviderProps> = ({ children }) => {
         return response.json();
     }
     const advancedImagePrompt = async (params: imageToImageGenParams) => {
-        const data = { 'prompt': ADVANCEDIMAGE_WORKFLOW, 'client_id': "1122"};
+        const data = { 'prompt': ADVANCEDIMAGE_WORKFLOW, 'client_id': clientId};
         ADVANCEDIMAGE_WORKFLOW["122"].inputs.image =  params.filename
         ADVANCEDIMAGE_WORKFLOW["6"].inputs.text =  params.positivePrompt
         ADVANCEDIMAGE_WORKFLOW["7"].inputs.text =  params.negativePrompt
@@ -97,7 +98,7 @@ export const ComfyProvider: React.FC<DataProviderProps> = ({ children }) => {
         return response.json();
     }
     const imageTo3dPrompt = async (filename: string) => {
-        const data = { 'prompt': IMAGETO3D_WORKFLOW, 'client_id': "1122"};
+        const data = { 'prompt': IMAGETO3D_WORKFLOW, 'client_id': clientId};
         IMAGETO3D_WORKFLOW["2"].inputs.image =  filename
 
         const response = await fetch('/prompt', {

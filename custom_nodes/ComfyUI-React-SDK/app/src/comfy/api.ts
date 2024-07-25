@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 
 export const WS_MESSAGE_TYPE_EXECUTING="executing"
 export const WS_MESSAGE_TYPE_EXECUTED="executed"
@@ -12,6 +13,7 @@ interface Callbacks {
 const subscribers: Callbacks = {}
 
 let webseocket: WebSocket
+export const clientId = uuidv4();
 
 export function Subscribe(key: string, callback:(message: any) => void){
     subscribers[key] = callback
@@ -31,7 +33,7 @@ export function GetWebSocket(){
         port = "8188"
     }
 
-    webseocket = new WebSocket("ws://"+hostname+":"+port+"/ws?clientId=1122");
+    webseocket = new WebSocket("ws://"+hostname+":"+port+`/ws?clientId=${clientId}`);
     // Define event handlers for the WebSocket connection
     webseocket.onopen = () => {
         console.log('WebSocket connected');
