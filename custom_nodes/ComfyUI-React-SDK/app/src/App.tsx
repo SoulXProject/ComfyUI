@@ -8,6 +8,7 @@ import { ComfyProvider } from './comfy/ComfyProvider';
 import MainPage from './Pages/MainPage';
 import ToggleColorMode from './dashboard/ToggleColorMode';
 import ImageToImage from "./dashboard/imageToImage";
+import CreateVideo from "./dashboard/createVideo";
 
 interface AppProps {
   colorMode: 'light' | 'dark';
@@ -25,6 +26,7 @@ const App: React.FC<AppProps> = ({ colorMode, setColorMode }) => {
           <Route path="/removeNukki" element={<RemoveNukki/>} />
           <Route path="/imageToImage" element={<ImageToImage/>} />
           <Route path="/imageTo3D" element={<ImageTo3D/>} />
+          <Route path="/createVideo" element={<CreateVideo/>} />
         </Routes>
       </Router>
     </ComfyProvider>

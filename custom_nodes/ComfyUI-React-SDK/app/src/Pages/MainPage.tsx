@@ -155,6 +155,36 @@ const MainPage: React.FC = () => {
             </Paper>
           </motion.div>
         </Grid>
+        <Grid item xs={12} sm={6}>
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.3 }}
+          >
+            <Paper
+              elevation={3}
+              style={{
+                padding: '20px',
+                backgroundColor: theme.palette.secondary.main,
+                color: 'white',
+                borderRadius: '16px',
+                textAlign: 'center',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '100%',
+                boxShadow: theme.shadows[4],
+              }}
+              component={Link}
+              to="/createVideo"
+            >
+              <Typography variant="h5">비디오 생성 AI</Typography>
+              <Typography variant="body1">
+                  이미지와 음성을 업로드하면 비디오를 자동으로 생성할 수 있습니다.
+              </Typography>
+            </Paper>
+          </motion.div>
+        </Grid>
       </Grid>
     </Container>
   );

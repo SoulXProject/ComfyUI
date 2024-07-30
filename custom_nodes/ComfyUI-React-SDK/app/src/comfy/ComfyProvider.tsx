@@ -9,7 +9,8 @@ import {
     IMAGETO3D_WORKFLOW,
     ADVANCEDIMAGE_WORKFLOW,
     imageToImageGenParams,
-    clientId
+    clientId,
+    VIDEO_WORKLOW
 } from "./api";
 
 interface DataContextProps {
@@ -18,6 +19,7 @@ interface DataContextProps {
     removeNukkiPrompt: (inputImage: string) => Promise<any>;
     advancedImagePrompt: (params: imageToImageGenParams) => Promise<any>;
     imageTo3dPrompt: (inputImage: string) => Promise<any>;
+    createVideoPrompt: (inputImage: string, inputAudio: string) => Promise<any>; 
     uploadImage: (file: File) => Promise<string>;
 }
 
@@ -112,6 +114,22 @@ export const ComfyProvider: React.FC<DataProviderProps> = ({ children }) => {
 
         return response.json();
     }
+    const createVideoPrompt = async (inputImage: string, inputAudio: string) => {
+        const data = { 'prompt': VIDEO_WORKLOW, 'client_id': clientId};
+        VIDEO_WORKLOW["2"].inputs.image =  inputImage
+        VIDEO_WORKLOW["1"].inputs.audio =  inputAudio
+
+        const response = await fetch('/prompt', {
+            method: 'POST',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        return response.json();
+    }
     const uploadImage = async (file: File): Promise<any> => {
         const formData = new FormData();
         formData.append('image', file);
@@ -128,7 +146,7 @@ export const ComfyProvider: React.FC<DataProviderProps> = ({ children }) => {
     };
 
     return (
-        <DataContext.Provider value={{fetchCheckpoints ,queuePrompt, removeNukkiPrompt, advancedImagePrompt, imageTo3dPrompt, uploadImage}}>
+        <DataContext.Provider value={{fetchCheckpoints ,queuePrompt, removeNukkiPrompt, advancedImagePrompt, imageTo3dPrompt, createVideoPrompt, uploadImage}}>
             {children}
         </DataContext.Provider>
     );
