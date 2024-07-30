@@ -187,9 +187,9 @@ const CreateVideo: React.FC<DashboardProps> = () => {
             >
               {outputImage ? (
                   <>
-                    <img
+                    <video
                         src={`/view?filename=${outputImage}&type=output&rand=${rand}`}
-                        alt=""
+                        controls
                         style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                     />
                     <Button
@@ -204,7 +204,7 @@ const CreateVideo: React.FC<DashboardProps> = () => {
                     </Button>
                   </>
               ) : (
-                  <img src={base} alt="Red dot" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                  <video src={base} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
               )}
             </Box>
           </Box>
